@@ -1,5 +1,5 @@
 {
-  "name": "mdxor-parser",
+  "name": "mdxor-compiler",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
