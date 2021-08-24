@@ -23,7 +23,7 @@ pub fn mdx_heading(code: &str) -> Option<ast::MDXNode> {
   if let Some(cap) = REGEX.captures(code) {
     let mut node = ast::MDXNode::new(HEADING_MAP.get(&cap[1]).unwrap(), "");
     let text = ast::MDXNode::new("", &cap[2]);
-    node.children.push(text);
+    node.push(text);
     return Some(node);
   }
   None
@@ -39,15 +39,15 @@ mod tests {
     assert_eq!(
       mdx_heading("## 123").unwrap(),
       ast::MDXNode {
-        node_type: "h2",
+        node_type: "h2".to_string(),
         children: vec![ast::MDXNode {
-          node_type: "",
+          node_type: "".to_string(),
           children: vec![],
           attrs: HashMap::new(),
-          text: "123",
+          text: "123".to_string(),
         }],
         attrs: HashMap::new(),
-        text: "",
+        text: "".to_string(),
       }
     );
   }
