@@ -4,6 +4,7 @@ use wasm_bindgen::prelude::*;
 
 mod ast;
 mod block;
+mod inline;
 mod parse;
 
 #[wasm_bindgen]

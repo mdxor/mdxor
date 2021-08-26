@@ -1,16 +1,28 @@
 use crate::block;
 
+enum State {
+  None,
+  InlineJsx,
+  BlockJsx,
+}
+
 struct Parser<'a> {
-  code: &'a str,
   chars: std::str::Chars<'a>,
+  tokenStack: Vec<String>,
+  state: State,
 }
 
 impl<'a> Parser<'a> {
   fn new(code: &'a str) -> Self {
     Parser {
-      code,
       chars: code.chars(),
+      tokenStack: vec![],
+      state: State::None,
     }
+  }
+
+  fn next_token() -> String {
+    String::from("")
   }
 }
 
