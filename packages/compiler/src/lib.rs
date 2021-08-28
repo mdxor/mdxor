@@ -9,5 +9,6 @@ mod parse;
 
 #[wasm_bindgen]
 pub fn transform(code: &str) -> String {
-    parse::parse(code)
+    // parse::parse(code)
+    "".to_owned()
 }
