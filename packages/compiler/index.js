@@ -1,4 +1,4 @@
-const js = import("./pkg/parser")
+const js = import("./pkg/compiler")
 js.then(js => {
-  js.initialize().then(() => console.log(js.parse("text")))
+  js.initialize().then(() => console.log(js.transform("\n 1text")))
 })

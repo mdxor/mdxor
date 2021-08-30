@@ -80,21 +80,21 @@ pub fn parse(code: &str) -> Vec<String> {
   tokens
 }
 
-#[cfg(test)]
-mod tests {
-  use super::*;
+// #[cfg(test)]
+// mod tests {
+//   use super::*;
 
-  #[test]
-  fn parse_1() {
-    assert_eq!(
-      parse("# 123 #\n123"),
-      vec![
-        "#".to_owned(),
-        "123".to_owned(),
-        "#".to_owned(),
-        "\n".to_owned(),
-        "123".to_owned()
-      ]
-    );
-  }
-}
+//   #[test]
+//   fn parse_1() {
+//     assert_eq!(
+//       parse("# 123 #\n123"),
+//       vec![
+//         "#".to_owned(),
+//         "123".to_owned(),
+//         "#".to_owned(),
+//         "\n".to_owned(),
+//         "123".to_owned()
+//       ]
+//     );
+//   }
+// }
