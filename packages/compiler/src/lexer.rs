@@ -1,6 +1,10 @@
+use crate::token;
 use lazy_static::lazy_static;
+use std::collections::HashMap;
 use std::collections::HashSet;
 enum State {
+  Import,
+  Export,
   BlockStart,
   Block,
   InlineJsx,
@@ -16,129 +20,121 @@ lazy_static! {
 
 struct Lexer<'a> {
   chars: std::str::Chars<'a>,
-  token_stack: Vec<String>,
   state: State,
+  token: String,
+  escaped: bool,
 }
 
 impl<'a> Lexer<'a> {
   pub fn new(code: &'a str) -> Self {
     Lexer {
       chars: code.chars(),
-      token_stack: vec![],
       state: State::BlockStart,
+      token: String::new(),
+      escaped: false,
     }
   }
 
-  fn next_token(&mut self) -> Option<String> {
-    if self.token_stack.len() > 0 {
-      let token = self.token_stack.pop().unwrap();
-      return Some(token);
-    }
-    let mut token = String::new();
+  fn next_token(&mut self) -> Option<token::Token> {
+    self.token.clear();
+    self.escaped = false;
     loop {
       if let Some(char) = self.chars.next() {
         match self.state {
           State::BlockStart => {
-            if self.further_block_start_token(&mut token, char) == true {
+            if let Some(token) = self.further_block_start_token(char) {
               self.state = State::Block;
               return Some(token);
             }
           }
           State::Block => {
-            if self.further_block_token(&mut token, char) == true {
+            if let Some(token) = self.further_block_token(char) {
               return Some(token);
             }
           }
           State::InlineJsx => {}
           State::BlockJsx => {}
+          State::Import => {}
+          State::Export => {}
         }
       } else {
-        if token.is_empty() {
-          return None;
-        }
-        return Some(token);
+        return None;
       }
     }
   }
 
-  fn further_block_start_token(&mut self, token: &mut String, char: char) -> bool {
+  fn gen_token(&mut self) -> Option<token::Token> {
+    if self.token.is_empty() {
+      return None;
+    }
+    if self.escaped {
+      Some(token::Token {
+        kind: token::TokenKind::Text,
+        // TODO
+        value: self.token.clone(),
+      })
+    } else {
+      Some(token::Token {
+        kind: token::get_token_kind(&self.token),
+        // TODO
+        value: self.token.clone(),
+      })
+    }
+  }
+
+  fn further_block_start_token(&mut self, char: char) -> Option<token::Token> {
     match char {
-      ' ' => {
-        if token.is_empty() {
-          return false;
-        }
-        return true;
-      }
-      '\n' => {
-        if token.is_empty() {
-          token.push(char);
-          return true;
-        }
-        let mut next_token = String::new();
-        next_token.push(char);
-        self.token_stack.push(next_token);
-        return true;
-      }
+      ' ' => self.gen_token(),
+      '\n' => self.gen_token(),
       _ => {
-        token.push(char);
-        return false;
+        self.token.push(char);
+        return None;
       }
     }
   }
 
-  fn further_block_token(&mut self, token: &mut String, char: char) -> bool {
+  fn further_block_token(&mut self, char: char) -> Option<token::Token> {
     match char {
-      ' ' => {
-        if token.is_empty() {
-          return false;
-        }
-        return true;
-      }
+      ' ' => self.gen_token(),
       '\n' => {
-        if token.is_empty() {
-          token.push(char);
-          return true;
-        }
-        let mut next_token = String::new();
-        next_token.push(char);
-        self.token_stack.push(next_token);
-        return true;
+        self.state = State::BlockStart;
+        self.gen_token()
       }
       _ => {
-        token.push(char);
-        return false;
+        self.token.push(char);
+        None
       }
     }
   }
 }
 
-#[cfg(test)]
-mod tests {
-  use super::*;
+// #[cfg(test)]
+// mod tests {
+//   use super::*;
 
-  fn lexer(code: &str) -> Vec<String> {
-    let mut parser = Lexer::new(code);
-    let mut tokens = vec![];
-    loop {
-      if let Some(token) = parser.next_token() {
-        tokens.push(token)
-      } else {
-        break;
-      }
-    }
-    tokens
-  }
-  #[test]
-  fn parse_1() {
-    assert_eq!(
-      lexer("# 123 #\n123"),
-      vec![
-        "#".to_owned(),
-        "123".to_owned(),
-        "#".to_owned(),
-        "\n".to_owned(),
-        "123".to_owned()
-      ]
-    );
-  }
-}
+//   fn lexer(code: &str) -> Vec<token::Token> {
+//     let mut parser = Lexer::new(code);
+//     let mut tokens = vec![];
+//     loop {
+//       if let Some(token) = parser.next_token() {
+//         tokens.push(token)
+//       } else {
+//         break;
+//       }
+//     }
+//     tokens
+//   }
+//   #[test]
+//   fn parse_1() {
+//     assert_eq!(
+//       lexer("# 123 #\n123"),
+//       vec![
+//         "#".to_owned(),
+//         "123".to_owned(),
+//         "#".to_owned(),
+//         "\n".to_owned(),
+//         "123".to_owned()
+//       ]
+//     );
+//   }
+// }
