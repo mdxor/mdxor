@@ -1,27 +1,23 @@
-pub enum TokenKind {
+#[derive(Debug, PartialEq)]
+pub enum Token {
   Heading1,
   Heading2,
   Heading3,
   Heading4,
   Heading5,
   Heading6,
-  Text,
+  Text(String),
   InlineCode,
 }
 
-pub struct Token {
-  pub kind: TokenKind,
-  pub value: String,
-}
-
-pub fn get_token_kind(token: &str) -> TokenKind {
-  match token {
-    "#" => TokenKind::Heading1,
-    "##" => TokenKind::Heading2,
-    "###" => TokenKind::Heading3,
-    "####" => TokenKind::Heading4,
-    "#####" => TokenKind::Heading5,
-    "######" => TokenKind::Heading6,
-    _ => TokenKind::Text,
+pub fn get_token(token: String) -> Token {
+  match &*token {
+    "#" => Token::Heading1,
+    "##" => Token::Heading2,
+    "###" => Token::Heading3,
+    "####" => Token::Heading4,
+    "#####" => Token::Heading5,
+    "######" => Token::Heading6,
+    _ => Token::Text(token),
   }
 }

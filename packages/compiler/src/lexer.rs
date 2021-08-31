@@ -57,6 +57,8 @@ impl<'a> Lexer<'a> {
           State::Import => {}
           State::Export => {}
         }
+      } else if !self.token.is_empty() {
+        return Some(token::get_token(self.token.clone()));
       } else {
         return None;
       }
@@ -68,17 +70,9 @@ impl<'a> Lexer<'a> {
       return None;
     }
     if self.escaped {
-      Some(token::Token {
-        kind: token::TokenKind::Text,
-        // TODO
-        value: self.token.clone(),
-      })
+      Some(token::Token::Text(self.token.clone()))
     } else {
-      Some(token::Token {
-        kind: token::get_token_kind(&self.token),
-        // TODO
-        value: self.token.clone(),
-      })
+      Some(token::get_token(self.token.clone()))
     }
   }
 
@@ -108,33 +102,32 @@ impl<'a> Lexer<'a> {
   }
 }
 
-// #[cfg(test)]
-// mod tests {
-//   use super::*;
+#[cfg(test)]
+mod tests {
+  use super::*;
 
-//   fn lexer(code: &str) -> Vec<token::Token> {
-//     let mut parser = Lexer::new(code);
-//     let mut tokens = vec![];
-//     loop {
-//       if let Some(token) = parser.next_token() {
-//         tokens.push(token)
-//       } else {
-//         break;
-//       }
-//     }
-//     tokens
-//   }
-//   #[test]
-//   fn parse_1() {
-//     assert_eq!(
-//       lexer("# 123 #\n123"),
-//       vec![
-//         "#".to_owned(),
-//         "123".to_owned(),
-//         "#".to_owned(),
-//         "\n".to_owned(),
-//         "123".to_owned()
-//       ]
-//     );
-//   }
-// }
+  fn lexer(code: &str) -> Vec<token::Token> {
+    let mut parser = Lexer::new(code);
+    let mut tokens = vec![];
+    loop {
+      if let Some(token) = parser.next_token() {
+        tokens.push(token)
+      } else {
+        break;
+      }
+    }
+    tokens
+  }
+  #[test]
+  fn parse_1() {
+    assert_eq!(
+      lexer("# 123 #\n123"),
+      vec![
+        token::Token::Heading1,
+        token::Token::Text("123".to_owned()),
+        token::Token::Heading1,
+        token::Token::Text("123".to_owned()),
+      ]
+    );
+  }
+}
