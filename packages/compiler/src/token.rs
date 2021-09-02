@@ -1,16 +1,16 @@
 #[derive(Debug, PartialEq)]
-pub enum Token {
+pub enum Token<'a> {
   Heading1,
   Heading2,
   Heading3,
   Heading4,
   Heading5,
   Heading6,
-  Text(String),
+  Text(&'a str),
   InlineCode,
 }
 
-pub fn get_token(token: String) -> Token {
+pub fn get_token(token: &str) -> Token {
   match &*token {
     "#" => Token::Heading1,
     "##" => Token::Heading2,

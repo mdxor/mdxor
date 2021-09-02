@@ -19,6 +19,7 @@ lazy_static! {
 }
 
 struct Lexer<'a> {
+  source: &'a str,
   chars: std::str::Chars<'a>,
   state: State,
   token: String,
@@ -26,16 +27,33 @@ struct Lexer<'a> {
 }
 
 impl<'a> Lexer<'a> {
-  pub fn new(code: &'a str) -> Self {
+  pub fn new(source: &'a str) -> Self {
     Lexer {
-      chars: code.chars(),
+      source,
+      chars: source.chars(),
       state: State::BlockStart,
       token: String::new(),
       escaped: false,
     }
   }
 
-  fn next_token(&mut self) -> Option<token::Token> {
+  fn advance(&mut self, i: usize) {
+    self.source = &self.source[i..];
+  }
+
+  fn get_token(&mut self) -> token::Token<'a> {
+    let token_str = &self.source[..self.token.len() + 1];
+    self.advance(self.source.len());
+    token::get_token(token_str)
+  }
+
+  fn get_text_token(&mut self) -> token::Token<'a> {
+    let token_str = &self.source[..self.token.len() + 1];
+    self.advance(self.source.len());
+    token::Token::Text(token_str)
+  }
+
+  fn next_token(&mut self) -> Option<token::Token<'a>> {
     self.token.clear();
     self.escaped = false;
     loop {
@@ -58,25 +76,25 @@ impl<'a> Lexer<'a> {
           State::Export => {}
         }
       } else if !self.token.is_empty() {
-        return Some(token::get_token(self.token.clone()));
+        return Some(self.get_token());
       } else {
         return None;
       }
     }
   }
 
-  fn gen_token(&mut self) -> Option<token::Token> {
+  fn gen_token(&mut self) -> Option<token::Token<'a>> {
     if self.token.is_empty() {
       return None;
     }
     if self.escaped {
-      Some(token::Token::Text(self.token.clone()))
+      Some(self.get_text_token())
     } else {
-      Some(token::get_token(self.token.clone()))
+      Some(self.get_token())
     }
   }
 
-  fn further_block_start_token(&mut self, char: char) -> Option<token::Token> {
+  fn further_block_start_token(&mut self, char: char) -> Option<token::Token<'a>> {
     match char {
       ' ' => self.gen_token(),
       '\n' => self.gen_token(),
@@ -87,7 +105,7 @@ impl<'a> Lexer<'a> {
     }
   }
 
-  fn further_block_token(&mut self, char: char) -> Option<token::Token> {
+  fn further_block_token(&mut self, char: char) -> Option<token::Token<'a>> {
     match char {
       ' ' => self.gen_token(),
       '\n' => {
@@ -107,10 +125,10 @@ mod tests {
   use super::*;
 
   fn lexer(code: &str) -> Vec<token::Token> {
-    let mut parser = Lexer::new(code);
+    let mut lexer = Lexer::new(code);
     let mut tokens = vec![];
     loop {
-      if let Some(token) = parser.next_token() {
+      if let Some(token) = lexer.next_token() {
         tokens.push(token)
       } else {
         break;
@@ -124,9 +142,9 @@ mod tests {
       lexer("# 123 #\n123"),
       vec![
         token::Token::Heading1,
-        token::Token::Text("123".to_owned()),
+        token::Token::Text("123"),
         token::Token::Heading1,
-        token::Token::Text("123".to_owned()),
+        token::Token::Text("123"),
       ]
     );
   }
