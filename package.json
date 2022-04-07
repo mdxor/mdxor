@@ -13,6 +13,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@vercel/style-guide": "^3.0.0",
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
@@ -20,5 +21,6 @@
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@6.3.0"
+  "packageManager": "pnpm@6.3.0",
+  "prettier": "@vercel/style-guide/prettier"
 }
