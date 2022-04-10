@@ -1,5 +1,5 @@
 {
-  "name": "preview",
+  "name": "editor",
   "description": "This is a React + vite boilerplate to be used with Tailwindcss.",
   "version": "0.4.0",
   "private": true,

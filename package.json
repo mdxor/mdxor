@@ -14,6 +14,8 @@
   },
   "devDependencies": {
     "prettier": "^2.5.1",
+    "eslint": "^7.32.0",
+    "typescript": "^4.6.3",
     "turbo": "latest"
   },
   "engines": {
