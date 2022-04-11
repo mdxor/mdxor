@@ -24,6 +24,8 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "config": "workspace:*",
     "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.11",

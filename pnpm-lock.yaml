@@ -24,6 +24,8 @@ importers:
       '@testing-library/react': ^13.0.0
       '@types/jest': ^27.4.1
       '@types/node': ^17.0.23
+      '@types/react': ^18.0.0
+      '@types/react-dom': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.17.0
       '@typescript-eslint/parser': ^5.17.0
       '@vitejs/plugin-react': ^1.3.0
@@ -56,6 +58,8 @@ importers:
       '@testing-library/react': registry.npmjs.org/@testing-library/react/13.0.0_react-dom@18.0.0+react@18.0.0
       '@types/jest': registry.npmjs.org/@types/jest/27.4.1
       '@types/node': registry.npmjs.org/@types/node/17.0.23
+      '@types/react': registry.npmjs.org/@types/react/18.0.1
+      '@types/react-dom': registry.npmjs.org/@types/react-dom/18.0.0
       '@typescript-eslint/eslint-plugin': registry.npmjs.org/@typescript-eslint/eslint-plugin/5.18.0_93fd1b55dafbdf76506419beaedce909
       '@typescript-eslint/parser': registry.npmjs.org/@typescript-eslint/parser/5.18.0_eslint@7.32.0+typescript@4.6.3
       '@vitejs/plugin-react': registry.npmjs.org/@vitejs/plugin-react/1.3.0
@@ -110,6 +114,8 @@ importers:
       '@testing-library/react': ^13.0.0
       '@types/jest': ^27.4.1
       '@types/node': ^17.0.23
+      '@types/react': ^18.0.0
+      '@types/react-dom': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.17.0
       '@typescript-eslint/parser': ^5.17.0
       '@vitejs/plugin-react': ^1.3.0
@@ -142,6 +148,8 @@ importers:
       '@testing-library/react': registry.npmjs.org/@testing-library/react/13.0.0_react-dom@18.0.0+react@18.0.0
       '@types/jest': registry.npmjs.org/@types/jest/27.4.1
       '@types/node': registry.npmjs.org/@types/node/17.0.23
+      '@types/react': registry.npmjs.org/@types/react/18.0.1
+      '@types/react-dom': registry.npmjs.org/@types/react-dom/18.0.0
       '@typescript-eslint/eslint-plugin': registry.npmjs.org/@typescript-eslint/eslint-plugin/5.18.0_93fd1b55dafbdf76506419beaedce909
       '@typescript-eslint/parser': registry.npmjs.org/@typescript-eslint/parser/5.18.0_eslint@7.32.0+typescript@4.6.3
       '@vitejs/plugin-react': registry.npmjs.org/@vitejs/plugin-react/1.3.0
