@@ -1,5 +1,8 @@
 {
   "extends": "config/typescript/reactjs.json",
   "include": ["src"],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "baseUrl": "./src"
+  }
 }
