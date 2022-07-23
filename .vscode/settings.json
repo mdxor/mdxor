@@ -1,7 +1,0 @@
-{
-  "eslint.workingDirectories": [
-    "./apps/official",
-    "./apps/preview",
-    "./packages/ui"
-  ]
-}

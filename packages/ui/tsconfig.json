@@ -1,5 +1,0 @@
-{
-  "extends": "@mdxor/config/typescript/reactjs.json",
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
-}

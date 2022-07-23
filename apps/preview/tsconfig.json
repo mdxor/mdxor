@@ -1,8 +1,25 @@
 {
-  "extends": "@mdxor/config/typescript/reactjs.json",
-  "include": ["src"],
-  "exclude": ["node_modules"],
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": "./src"
-  }
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }
